@@ -53,7 +53,7 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-You need to have python installed (https://www.python.org/downloads/), do not forget to add environment variables.
+You need to have python (https://www.python.org/downloads/) and pip installed (https://pip.pypa.io/en/stable/installation/), do not forget to add environment variables for python and pip.
 
 ### Installation
 
@@ -71,7 +71,7 @@ pip install -r requirements.txt
 
 then you can run the app:
 ```bash
-python app.py
+python front_end_app.py
 ```
 
 
