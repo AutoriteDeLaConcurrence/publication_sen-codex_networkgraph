@@ -26,8 +26,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Link to the project][product-screenshot]](https://sen-codex.dev){:target="_blank"}
-[link](https://sen-codex.dev){:target="_blank"}
+[![Link to the project][product-screenshot]](https://sen-codex.dev)
 
 The Digital Economy Unit of the French Competition Agency (“FCA”) has developed a tool that identifies citations of the FCA’s publications in other Autorité’s publications and represents the interconnections in a graph. The creation of such a tool breaks new ground in computational antitrust research. The present open source code is designed to be publicly accessible—anyone can see, modify, and distribute the code as they see fit. Open source software is developed in a decentralized and collaborative way, relying on peer review and community production.
 
