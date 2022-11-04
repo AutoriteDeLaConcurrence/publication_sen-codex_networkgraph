@@ -103,6 +103,6 @@ To be added
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
+[product-screenshot]: images/screenshot.png
 
 
