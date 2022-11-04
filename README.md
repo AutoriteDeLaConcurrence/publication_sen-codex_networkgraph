@@ -40,6 +40,7 @@ This section list major frameworks/libraries used to bootstrap the project.
 * ![Dash](https://img.shields.io/badge/DASH-007396.svg?&style=flat&logo=plotly&logoColor=white)&nbsp;
 * ![Dash cytoscape](https://img.shields.io/badge/DASH-CYTOSCPAE-007396.svg?&style=flat&logo=plotly&logoColor=white)&nbsp;
 
+Dash is an open-source framework for Python written on top of Flask, Plotly.js, and React.js
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -59,7 +60,7 @@ You need to have python (https://www.python.org/downloads/) and pip installed (h
 
 To clone this repository, run:
 ```
-git clone https://github.com/plotly/dash-sample-apps
+git clone https://github.com/AutoriteDeLaConcurrence/publication_sen-codex_networkgraph
 ```
 
 To create an isolated Python virtual environment.
