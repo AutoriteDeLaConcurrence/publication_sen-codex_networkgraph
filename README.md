@@ -62,6 +62,7 @@ To clone this repository, run:
 git clone https://github.com/plotly/dash-sample-apps
 ```
 
+To create an isolated Python virtual environment.
 ```bash
 python -m venv venv
 source venv/bin/activate  # Windows: \venv\scripts\activate
