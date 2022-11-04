@@ -30,8 +30,6 @@
 
 The Digital Economy Unit of the French Competition Agency (“FCA”) has developed a tool that identifies citations of the FCA’s publications in other Autorité’s publications and represents the interconnections in a graph. The creation of such a tool breaks new ground in computational antitrust research. The present open source code is designed to be publicly accessible—anyone can see, modify, and distribute the code as they see fit. Open source software is developed in a decentralized and collaborative way, relying on peer review and community production.
 
-
-
 ### Built With
 
 This section list major frameworks/libraries used to bootstrap the project.
@@ -74,7 +72,7 @@ then you can run the app:
 ```bash
 python front_end_app.py
 ```
-
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -85,8 +83,6 @@ If you have a suggestion that would make this better, please fork the repo and c
 Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- LICENSE -->
 ## License
@@ -100,7 +96,6 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 ## Acknowledgments
 
 To be added
-
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
