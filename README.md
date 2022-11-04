@@ -40,7 +40,7 @@ The Digital Economy Unit of the French Competition Agency (“FCA”) has develo
 This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
 * ![Python](https://img.shields.io/badge/PYTHON-007396.svg?&style=flat&logo=python&logoColor=white)&nbsp;
-* ![Dash](https://img.shields.io/badge/DASH-007396.svg?&style=flat&logo=dash&logoColor=white)&nbsp;
+* ![Dash](https://img.shields.io/badge/PLOTLY-007396.svg?&style=flat&logo=plotly&logoColor=white)&nbsp;
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
