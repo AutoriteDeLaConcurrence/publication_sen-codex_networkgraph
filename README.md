@@ -34,7 +34,7 @@ The Digital Economy Unit of the French Competition Agency (“FCA”) has develo
 
 ### Built With
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
+This section list major frameworks/libraries used to bootstrap the project.
 
 * ![Python](https://img.shields.io/badge/PYTHON-007396.svg?&style=flat&logo=python&logoColor=white)&nbsp;
 * ![Dash](https://img.shields.io/badge/DASH-007396.svg?&style=flat&logo=plotly&logoColor=white)&nbsp;
