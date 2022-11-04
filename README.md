@@ -53,7 +53,7 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-You need to have python (https://www.python.org/downloads/).
+You need to have python installed (https://www.python.org/downloads/), dont forget to add environment variables.
 
 ### Installation
 
