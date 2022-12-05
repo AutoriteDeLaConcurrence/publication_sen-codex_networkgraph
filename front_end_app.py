@@ -2,8 +2,7 @@
 
 from datetime import datetime
 import blosc
-import dash
-from dash import dcc, html, Input, Output, State
+from dash import Dash, dcc, html, Input, Output, State
 import dash_bootstrap_components as dbc
 import dash_cytoscape as cyto
 import pandas as pd
@@ -18,14 +17,16 @@ with open(f"static/elements_m1.dat", "rb") as f:
     # turn bytes object back into data
     elements = pickle.loads(depressed_pickle)
 
-df_export = pd.read_csv('static/export_graph_1309.csv', index_col=None, sep=';', engine='python')
+df_export = pd.read_csv('static/export_graph_1309.csv', index_col=False, sep=',', engine='python')
 
 #Setting Dash app
 
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.title = 'SEN-CodeX'
 
 server = app.server
+app.scripts.config.serve_locally = True
+app.css.config.serve_locally = True
 
 #Creation of Navbar
 
@@ -52,7 +53,7 @@ navbar = dbc.NavbarSimple(
         dbc.NavItem(
             dbc.NavLink(
                 "Source Code",
-                href="https://github.com/AutoriteDeLaConcurrence",
+                href="https://github.com/AutoriteDeLaConcurrence/publication_sen-codex_networkgraph",
                 target="_blank"
             ),
             style={"margin-left":"35px"}
@@ -71,7 +72,7 @@ navbar = dbc.NavbarSimple(
 
 range_slider = dbc.Row(
     [
-        dbc.Label("Filter per year"),
+        dbc.Label("Choose a period of time below and it will show the subsequent graph consisting of all the publications of the FCA between this time period and the quotations to others FCA’s publications found in this subset."),
         dbc.Col(
         dcc.RangeSlider(id="my-range-slider", min=9,
                         max=21, step=None, value=[9, 21],
@@ -100,30 +101,30 @@ range_slider = dbc.Row(
 
 sector_dropdown = dbc.Row(
     [
-        dbc.Label("Filter per sector(s)"),
+        dbc.Label("Hightlight per sector(s)"),
         dbc.Col(
         dcc.Dropdown(
             id="sectors_dropdown",
             options=[
-                {'label': 'Agriculture / Agro-alimentaire', 'value': 'Agriculture'},
-                {'label': 'Art et culture', 'value': 'Art'},
-                {'label': 'Banque / Assurance', 'value': 'Banque'},
-                {'label': 'BTP', 'value': 'BTP'},
+                {'label': 'Agriculture / Agri-food', 'value': 'Agriculture'},
+                {'label': 'Art and culture', 'value': 'Art'},
+                {'label': 'Bank / Insurance', 'value': 'Banque'},
+                {'label': 'Construction', 'value': 'BTP'},
                 {'label': 'Distribution', 'value': 'Distribution'},
-                {'label': 'Energie / Environnement', 'value': 'Energie'},
-                {'label': 'Grande consommation', 'value': 'consommation'},
-                {'label': 'Industrie', 'value': 'Industrie'},
-                {'label': 'Numérique', 'value': 'Numérique'},
-                {'label': 'Outre-mer', 'value': 'Outre'},
-                {'label': 'Presse / Médias', 'value': 'Presse'},
-                {'label': 'Proféssions réglementées', 'value': 'Professions'},
-                {'label': 'Santé', 'value': 'Santé'},
+                {'label': 'Energy / Environment', 'value': 'Energie'},
+                {'label': 'Consumption', 'value': 'consommation'},
+                {'label': 'Industry', 'value': 'Industrie'},
+                {'label': 'Digital', 'value': 'Numérique'},
+                {'label': 'Overseas', 'value': 'Outre'},
+                {'label': 'Press / Media', 'value': 'Presse'},
+                {'label': 'Regulated professions', 'value': 'Professions'},
+                {'label': 'Health', 'value': 'Santé'},
                 {'label': 'Services', 'value': 'Services'},
                 {'label': 'Sport', 'value': 'Sport'},
-                {'label': 'Télécoms', 'value': 'Télécoms'},
-                {'label': 'Tourisme / Hôtellerie / Restauration', 'value': 'Tourisme'},
-                {'label': 'Transports', 'value': 'Transports'},
-                {'label': "Vie de l'institution", 'value': 'institution'},
+                {'label': 'Telecoms', 'value': 'Télécoms'},
+                {'label': 'Tourism / Hotel / Catering', 'value': 'Tourisme'},
+                {'label': 'Transport', 'value': 'Transports'},
+                {'label': "Life of the institution", 'value': 'institution'},
             ],
             persistence=True
             # multi=True,
@@ -136,11 +137,11 @@ sector_dropdown = dbc.Row(
 
 #Filter 3 : node input
 
-node_input = dbc.Row(
+node_dropdown = dbc.Row(
     [
-        dbc.Label("Highlight publication(s)"),
+        dbc.Label("Highlight publication(s) by its number (i.e. 09-D-06, 20-A-08, etc…) Only decisions, opinions and interim measures are available."),
         dbc.Col(
-        dcc.Input(id="input_node", type="text"),
+        dcc.Dropdown(df_export['Publication A'].unique(), id="dropdown_node"),
         width=10
         ),
     ],
@@ -152,7 +153,7 @@ node_input = dbc.Row(
 offcanvas_research= html.Div(
     [
         dbc.Offcanvas(
-            dbc.Form([node_input, sector_dropdown, range_slider]),
+            dbc.Form([node_dropdown, sector_dropdown, range_slider]),
             id='offcanvas-recherche',
             title='Explore the complex network',
             is_open=False,
@@ -341,7 +342,7 @@ def update_output(value, existing_state):
 
 @app.callback(Output('cytoscape-layout', 'stylesheet'),
               [Input('cytoscape-layout', 'tapNode'), Input(component_id='sectors_dropdown', component_property='value'),
-              Input(component_id='input_node', component_property='value')])
+              Input(component_id='dropdown_node', component_property='value')])
 def generate_stylesheet(node, sector, input):
     if not node and not sector and not input:
         return default_stylesheet
@@ -372,17 +373,15 @@ def generate_stylesheet(node, sector, input):
             {
                 "selector": 'node[id = "{}"]'.format(node['data']['id']),
                 "style": {
-                    'background-color': 'red',
-                    "border-color": "red",
+                    'background-color': '#920000',
+                    "border-color": "#920000",
                     "border-width": 2,
                     "border-opacity": 1,
                     "opacity": 1,
-
                     "label": "data(label)",
-                    "color": "red", 
+                    "color": "#920000", 
                     "text-opacity": 1,
                     "font-size": 12,
-                    'z-index': 9999
                 }
             }]
 
@@ -391,18 +390,17 @@ def generate_stylesheet(node, sector, input):
                 stylesheet.append({
                     "selector": 'node[id = "{}"]'.format(edge['target']),
                     "style": {
-                        'background-color': '#FFC857',
+                        'background-color': '#ffdf4d',
                         'opacity': 0.9
                     }
                 })
                 stylesheet.append({
                     "selector": 'edge[id= "{}"]'.format(edge['id']),
                     "style": {
-                        "mid-target-arrow-color": '#FFC857',
+                        "mid-target-arrow-color": '#ffdf4d',
                         "mid-target-arrow-shape": "vee",
-                        "line-color": '#FFC857',
+                        "line-color": '#ffdf4d',
                         'opacity': 0.9,
-                        'z-index': 5000
                     }
                 })
 
@@ -410,19 +408,17 @@ def generate_stylesheet(node, sector, input):
                 stylesheet.append({
                     "selector": 'node[id = "{}"]'.format(edge['source']),
                     "style": {
-                        'background-color': '#A997DF',
+                        'background-color': '#b66dff ',
                         'opacity': 0.9,
-                        'z-index': 9999
                     }
                 })
                 stylesheet.append({
                     "selector": 'edge[id= "{}"]'.format(edge['id']),
                     "style": {
-                        "mid-target-arrow-color": '#A997DF',
+                        "mid-target-arrow-color": '#b66dff ',
                         "mid-target-arrow-shape": "vee",
-                        "line-color": '#A997DF',
+                        "line-color": '#b66dff ',
                         'opacity': 1,
-                        'z-index': 5000
                     }
                 })
 
@@ -455,23 +451,21 @@ def generate_stylesheet(node, sector, input):
             {
                 "selector": 'node[id = "{}"]'.format(node['data']['id']),
                 "style": {
-                    'background-color': 'red',
-                    "border-color": "red",
+                    'background-color': '#920000',
+                    "border-color": "#920000",
                     "border-width": 2,
                     "border-opacity": 1,
                     "opacity": 1,
-
                     "label": "data(label)",
-                    "color": "red",
+                    "color": "#920000",
                     "text-opacity": 1,
                     "font-size": 12,
-                    'z-index': 9999
                 }
             },
                         {
                 'selector': f'[secteur ^= "{sector}"]',
                 'style': {
-                    'background-color': 'red',
+                    'background-color': '#920000',
                 }
             }
             ]
@@ -481,18 +475,17 @@ def generate_stylesheet(node, sector, input):
                 stylesheet.append({
                     "selector": 'node[id = "{}"]'.format(edge['target']),
                     "style": {
-                        'background-color': '#FFC857',
+                        'background-color': '#ffdf4d',
                         'opacity': 0.9
                     }
                 })
                 stylesheet.append({
                     "selector": 'edge[id= "{}"]'.format(edge['id']),
                     "style": {
-                        "mid-target-arrow-color": '#FFC857',
+                        "mid-target-arrow-color": '#ffdf4d',
                         "mid-target-arrow-shape": "vee",
-                        "line-color": '#FFC857',
+                        "line-color": '#ffdf4d',
                         'opacity': 0.9,
-                        'z-index': 5000
                     }
                 })
 
@@ -500,19 +493,17 @@ def generate_stylesheet(node, sector, input):
                 stylesheet.append({
                     "selector": 'node[id = "{}"]'.format(edge['source']),
                     "style": {
-                        'background-color': '#A997DF',
+                        'background-color': '#b66dff ',
                         'opacity': 0.9,
-                        'z-index': 9999
                     }
                 })
                 stylesheet.append({
                     "selector": 'edge[id= "{}"]'.format(edge['id']),
                     "style": {
-                        "mid-target-arrow-color": '#A997DF',
+                        "mid-target-arrow-color": '#b66dff ',
                         "mid-target-arrow-shape": "vee",
-                        "line-color": '#A997DF',
+                        "line-color": '#b66dff ',
                         'opacity': 1,
-                        'z-index': 5000
                     }
                 })
 
@@ -543,20 +534,9 @@ def generate_stylesheet(node, sector, input):
                 },
             },
             {
-                "selector": 'edge',
-                "style": {
-                    "target-arrow-color": "#C5D3E2",
-                    "target-arrow-shape": "triangle",
-                    "line-color": "#C5D3E2",
-                    "background-color": "#07ABA0",
-                    'arrow-scale': 2,
-                    'curve-style': 'bezier'
-                },
-            },
-            {
                 'selector': f'[secteur ^= "{sector}"]',
                 'style': {
-                    'background-color': 'red',
+                    'background-color': '#920000',
                 }
             }
         ]
@@ -587,33 +567,25 @@ def generate_stylesheet(node, sector, input):
                 },
             },
             {
-                "selector": 'edge',
-                "style": {
-                    "target-arrow-color": "#C5D3E2",
-                    "target-arrow-shape": "triangle",
-                    "line-color": "#C5D3E2",
-                    "background-color": "#07ABA0",
-                    'arrow-scale': 2,
-                    'curve-style': 'bezier'
-                },
-            },
-            {
                 "selector": f'[id ^= "{input}"]',
                 "style": {
-                    'background-color': 'red',
-                    "border-color": "red",
+                    'background-color': '#920000',
+                    "border-color": "#920000",
+                    
                     "border-width": 2,
                     "border-opacity": 1,
                     "opacity": 1,
+                    "width": "200px",
+                    "height": "200px",
                     "label": "data(label)",
-                    "color": "red",
+                    "color": "#920000",
                     "text-opacity": 1,
                     "font-size": 12,
-                    'z-index': 9999
                 }
             },
         ]
         return stylesheet
+    
 
 # Callback 5 : Download data (xlsx format) when clicking on "Download data"
 
@@ -629,4 +601,4 @@ def func(n_clicks, elements):
         return dcc.send_data_frame(data.to_excel, f"export_details_{element['id']}.xlsx", sheet_name="data")
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(host='0.0.0.0', debug=False )
