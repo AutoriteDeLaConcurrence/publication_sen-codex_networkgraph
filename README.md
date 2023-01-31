@@ -99,7 +99,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 We would like to thank :
 
-* Autorité de la concurrence (FRANCE) : Yann Guthmann, Adrien Frumence and Camille Hoogterp
+* Autorité de la concurrence (France) : Yann Guthmann, Adrien Frumence and Camille Hoogterp
 * The Stanford University CodeX Center
 * Stanford Computational Antitrust Project Director: Dr. Thibault Schrepel // Editor-in-Chief: Teodora Groza
 * Editors: Thaiane Abreu, Juan Sebastian Gomez, Mariah Mumbi Kirubi, Kyrill Ryabtsev, Anna Starkova, Björn ten Seldam, Glen Williams
