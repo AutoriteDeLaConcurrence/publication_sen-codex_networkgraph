@@ -97,7 +97,12 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-To be added
+We would loke to thank :
+
+* Stanford Computational Antitrust Project Director: Dr. Thibault Schrepel // Editor-in-Chief: Teodora Groza
+* Editors: Thaiane Abreu, Juan Sebastian Gomez, Mariah Mumbi Kirubi, Kyrill Ryabtsev, Anna Starkova, Björn ten Seldam, Glen Williams
+* Academic Outreach Chair: Aleksandra Wierzbicka // Executive Operations Chair: Alex Sotropa
+* And the Stanford University CodeX Center
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
